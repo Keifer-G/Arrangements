@@ -4,6 +4,36 @@ let vmc = {};
 // register method collections
 // register codes come from merge.js
 // first run merge.js to create methods then copy here
+vmc.cache = {
+    /**
+     * @param {Map} storage 
+     */
+    initLocalStorage: function (storages) {
+        if (!storages instanceof Object || storages instanceof Array) {
+            console.error("storages type not correct!");
+        }
+        try {
+            for (let key in storages) {
+                window.localStorage.setItem(key, storages[key]);
+            }
+        } catch (err) {
+            console.error("storages type not correct!");
+        }
+    },
+
+    /**
+     * @param {String} key 
+     * @param {Object} value 
+     */
+    addLocalStorage: function (key, value) {
+        try {
+            window.localStorage.setItem(key, value);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+}
 vmc.doajax = {
     get: function (url) {
         

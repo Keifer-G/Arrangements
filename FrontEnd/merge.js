@@ -2,7 +2,7 @@ let fs = require('fs');
 let path = require('path');//解析需要遍历的文件夹
 //  let filePath = path.resolve('./merge');
 
-let configPaths = ['./merge/request','./merge/utils'];
+let configPaths = ['./merge'];
 
 let vmcContent = "// create global vmc\n"
     + "let vmc = {};\n"

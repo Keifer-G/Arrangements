@@ -56,7 +56,7 @@ function readDirRecur(folder, callback) {
                             let contentIndex = content.indexOf("=");
                             content = content.substring(contentIndex + 1);
                             console.log(fullPath + createSymbolString(79 - fullPath.length) + "-- generate success!")
-                            vmcContent += "vmc." + file + " =" + content + "\n";
+                            vmcContent += "vmc." + file.split(".")[0] + " =" + content + "\n";
                             conflictFile.push(file);
                         }else{
                             throw new Error("Generate Failed: "+file+" has already exit!")
@@ -83,7 +83,7 @@ let timeStart = new Date();
                 completeGenerator++
                 if(completeGenerator == configPaths.length){
                     vmcContent += "})();";
-                    fs.writeFile('./vmc.js', vmcContent, null, function () { });
+                    fs.writeFile(__dirname+'/vmc.js', vmcContent, null, function () { });
                     console.log("----------------------------------------------------------------------------------------------------");
                     console.log("Elapsed Time -- " + ((new Date() - timeStart) / 1000).toFixed(3) + "s");
                 }

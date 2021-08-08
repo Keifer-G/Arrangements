@@ -2,7 +2,7 @@ let cache = {
     /**
      * @param {Map} storage 
      */
-    initLocalStorage: function (storages) {
+    init: function (storages) {
         if (!storages instanceof Object || storages instanceof Array) {
             console.error("storages type not correct!");
         }
@@ -14,17 +14,21 @@ let cache = {
             console.error("storages type not correct!");
         }
     },
-
     /**
      * @param {String} key 
      * @param {Object} value 
      */
-    addLocalStorage: function (key, value) {
+    set: function (key, value) {
         try {
             window.localStorage.setItem(key, value);
         } catch (err) {
             console.error(err);
         }
+    },
+    clear: function () {
+        window.localStorage.clear();
+    },
+    remove: function (key) {
+        window.localStorage.removeItem(key);
     }
-
 }

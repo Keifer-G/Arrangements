@@ -1,6 +1,6 @@
 let fs = require('fs');
 let path = require('path');//解析需要遍历的文件夹
-let configPaths = ['./merge/request','./merge/utils'];
+let configPaths = ['./merge'];
 
 // 判断是否存在冲突
 let conflictFile = [];
@@ -77,7 +77,8 @@ let timeStart = new Date();
         // 执行获取merge文件内容
         for (let index = 0; index < configPaths.length; index++) {
             const element = configPaths[index];
-            readDirRecur(element, function () {
+            let itemPath = path.join(__dirname, element);
+            readDirRecur(itemPath, function () {
                 /* console.log(n, "realcallback"); */
                 completeGenerator++
                 if(completeGenerator == configPaths.length){

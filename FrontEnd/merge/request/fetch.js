@@ -11,8 +11,10 @@
 //fetch不支持abort，不支持超时控制，使用setTimeout及Promise.reject的实现的超时控制并不能阻止请求过程继续在后台运行，造成了流量的浪费
 //fetch没有办法原生监测请求的进度，而XHR可以
 let fetchUtils = {
+    GET: { method: 'GET', credentials: 'include' },
+    POST: { method: 'POST', credentials: 'include' },
     get: function (url) {
-        let req = new Request(url, { method: 'GET', credentials: 'include'});
+        let req = new Request(url, this.GET);
         fetch(req).then(function (response) {
             if (response.ok){
                 return response.json();

@@ -24,40 +24,39 @@ let timeUtils = {
      * @returns 
      */
     getDateDiffrence: function (date1, date2) {
-
-
-        let startDate = Date.parse(dateString1);
-        let endDate = Date.parse(dateString2);
-        let days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
-        return days;
+        let startDate = this.parseDateTime(date1);
+        let endDate = this.parseDateTime(date2);
+        return (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
     },
     /**
      * 
      * @param {Date|String|Long} obj 
      */
     parseDateTime: function (obj) {
-        let getType;
-        if (vmc && vmc.utils && vmc.utils.getType) {
-            getType = vmc.utils.getType;
-        } else {
-            getType = function (v) {
-                let type = Object.prototype.toString.call(v).substring(8);
-                return type.substring(0, type.length - 1);
-            }
-        }
-        let objType = getType(obj);
+        let type = Object.prototype.toString.call(obj).substring(8);
+        let objType = type.substring(0, type.length - 1);
         if (!(objType == "String" || objType == "Number" || objType == "Date")) {
+            return null;
+        }
+        if (objType == "String") {
+            return Date.parse(obj);
+        } else if (objType == "Number" && !isNaN(parseInt(obj))) {
+            return obj;
+        } else if (objType == "Date") {
+            return obj.getTime();
+        } else {
             return null;
         }
     },
     /**
      * format Date
+     * yyyy-MM-dd hh:mm:ss SSS
      * @param {Date} date 
      * @param {String} fmt 
      * @returns {String}
      */
     format: function (date, fmt) {
-        if(Object.prototype.toString.call(date) != '[object Date]'){
+        if (Object.prototype.toString.call(date) != '[object Date]') {
             console.error("type error! date must be Date!");
             return;
         }
@@ -75,9 +74,37 @@ let timeUtils = {
             if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     },
-    transFormat: function(datestr, fmt){
-        
-    }
-    
+    /**
+     * time string format to another format
+     * @param {String} datestr date string param
+     * @param {String} preFmt Original Format
+     * @param {String} tarFmt target Format
+     * @returns {String}
+     */
+    transFormat: function (datestr, preFmt, tarFmt) {
 
+    }
+}
+
+/**
+ * format Date
+ * yyyy-MM-dd hh:mm:ss SSS
+ * @param {Date} date 
+ * @param {String} fmt 
+ * @returns {String}
+ */
+Date.prototype.format = Date.prototype.format ? Date.prototype.format : function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
 }

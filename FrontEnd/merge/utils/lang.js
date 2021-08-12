@@ -121,6 +121,11 @@ let lang = {
 
 }
 
+/**
+ * String's method
+ * String unique
+ * @returns {String}
+ */
 String.prototype.unique = function () {
     var obj = {},
         str = '',

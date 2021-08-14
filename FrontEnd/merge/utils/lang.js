@@ -167,6 +167,11 @@ let lang = {
 
 }
 
+/**
+ * String's method
+ * String unique
+ * @returns {String}
+ */
 String.prototype.unique = function () {
     var obj = {},
         str = '',
@@ -179,6 +184,3 @@ String.prototype.unique = function () {
     }
     return str;
 }
-
-let a = [];
-a.reduce();

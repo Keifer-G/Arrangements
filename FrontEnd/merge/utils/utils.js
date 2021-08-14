@@ -28,7 +28,7 @@ let utils = {
         }
     },
     /**
-     * 
+     * 播放音频
      * @param {String} url 
      * @returns 
      */
@@ -112,5 +112,8 @@ let utils = {
     isEmail: function (sEmail) {
         var reg = /^([\w+\.])+@\w+([.]\w+)+$/
         return reg.test(sEmail)
+    },
+    capitalizeEveryWord: function (str) {
+        return str.replace(/\b[a-z]/g, char => char.toUpperCase());
     }
 }

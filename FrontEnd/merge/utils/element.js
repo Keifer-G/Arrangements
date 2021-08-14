@@ -31,5 +31,11 @@ let element = {
         oscript.src = url;
         document.body.appendChild(oscript);
     },
-    
+    /**
+     * 检测页面是否滚动到页面底部
+     * @returns {Boolean}
+     */
+    bottomVisible: function () {
+        return document.documentElement.clientHeight + window.scrollY >= (document.documentElement.scrollHeight || document.documentElement.clientHeight);
+    }
 }

@@ -83,6 +83,14 @@ let timeUtils = {
      */
     transFormat: function (datestr, preFmt, tarFmt) {
 
+    },
+    /**
+     * 判读当前是今年的第几天
+     * @param {Date} date 
+     * @returns 
+     */
+    dayOfYear: function (date = new Date()) {
+        return Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24); 
     }
 }
 

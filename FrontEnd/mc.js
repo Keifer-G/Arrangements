@@ -1,10 +1,10 @@
-// create global vmc
-let vmc = {};
+// create global mc
+let mc = {};
 (function () {
     // register method collections
     // register codes come from merge.js
     // first run merge.js to create methods then copy here
-    vmc.cache = {
+    mc.cache = {
         /**
          * @param {Map} storage 
          */
@@ -38,7 +38,7 @@ let vmc = {};
             window.localStorage.removeItem(key);
         }
     }
-    vmc.ajax = {
+    mc.ajax = {
         request: function (url, method, callback, data, flag) {
             let xhr;
             flag = flag || true;
@@ -67,15 +67,9 @@ let vmc = {};
             }
         }
     }
-    vmc.fetch = {
-        GET: {
-            method: 'GET',
-            credentials: 'include'
-        },
-        POST: {
-            method: 'POST',
-            credentials: 'include'
-        },
+    mc.fetch = {
+        GET: { method: 'GET', credentials: 'include' },
+        POST: { method: 'POST', credentials: 'include' },
         get: function (url) {
             let req = new Request(url, this.GET);
             fetch(req).then(function (response) {
@@ -87,7 +81,9 @@ let vmc = {};
             })
         }
     }
-    vmc.element = {
+
+
+    mc.element = {
         /**
          * Prevent event bubbling
          * @param {HTMLElement} e 
@@ -120,9 +116,15 @@ let vmc = {};
             oscript.src = url;
             document.body.appendChild(oscript);
         },
-
+        /**
+         * 检测页面是否滚动到页面底部
+         * @returns {Boolean}
+         */
+        bottomVisible: function () {
+            return document.documentElement.clientHeight + window.scrollY >= (document.documentElement.scrollHeight || document.documentElement.clientHeight);
+        }
     }
-    vmc.lang = {
+    mc.lang = {
         /**
          * get param's type
          * 
@@ -241,6 +243,52 @@ let vmc = {};
                 temp = temp > 9;
             }
             return res.replace(/^0+/, '');
+        },
+        /**
+         * 判断数组中内容是否都满足条件
+         * @param {Array} arr 
+         * @param {Function} fn 
+         * @returns {Boolean}
+         */
+        arrayAllMeet: function (arr, fn = Boolean) {
+            return arr.every(fn);
+        },
+        /**
+         * 判断数组内每个元素是否全部相同
+         * @param {Array} arr 
+         * @returns {Boolean}
+         */
+        arrayAllEqual: function (arr) {
+            return arr.every(v => val === arr[0]);
+        },
+        /**
+         * 将没有逗号或双引号的元素转换成带有分隔符的字符串即CVS格式识别的形式
+         * @param {Array} arr 
+         * @param {String} delimiter 
+         * @returns 
+         */
+        arrayToCSV: function (arr, delimiter = ",") {
+            return arr.map(v => v.map(x => `"${x}"`).join(delimiter)).join("\n");
+        },
+        /**
+         * 计算平均数
+         * @param  {...any} nums 
+         * @returns 
+         */
+        average: function (...nums) {
+            return nums.reduce((acc, val) => Number(acc) + Number(val), 0) / nums.length;
+        },
+        /**
+         * 按照指定逻辑判断函数fn判断arr中满足条件的内容，满足的放置返回的第一个数组中，其余放置返回的第二个数组中
+         * @param {Array} arr 
+         * @param {Function} fn 
+         * @returns => [[满足], [不满足]] 
+         */
+        bifurcateBy: function (arr, fn) {
+            return arr.reduce((acc, val, i) => (acc[fn(val, i) ? 0 : 1].push(val), acc), [[], []]);
+        },
+        countOccurences: function (arr, val) {
+            return arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
         }
 
     }
@@ -257,7 +305,10 @@ let vmc = {};
         }
         return str;
     }
-    vmc.timeUtils = {
+
+    let a = [];
+    a.reduce();
+    mc.timeUtils = {
         getYear: function () {
             console.log(new Date());
         },
@@ -342,6 +393,14 @@ let vmc = {};
          */
         transFormat: function (datestr, preFmt, tarFmt) {
 
+        },
+        /**
+         * 判读当前是今年的第几天
+         * @param {Date} date 
+         * @returns 
+         */
+        dayOfYear: function (date = new Date()) {
+            return Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
         }
     }
 
@@ -367,7 +426,7 @@ let vmc = {};
             if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
-    vmc.utils = {
+    mc.utils = {
         /**
          * 
          * @param {String} u 
@@ -397,7 +456,7 @@ let vmc = {};
             }
         },
         /**
-         * 
+         * 播放音频
          * @param {String} url 
          * @returns 
          */
@@ -481,6 +540,9 @@ let vmc = {};
         isEmail: function (sEmail) {
             var reg = /^([\w+\.])+@\w+([.]\w+)+$/
             return reg.test(sEmail)
+        },
+        capitalizeEveryWord: function (str) {
+            return str.replace(/\b[a-z]/g, char => char.toUpperCase());
         }
     }
 })();

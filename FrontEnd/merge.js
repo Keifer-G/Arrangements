@@ -5,8 +5,8 @@ let configPaths = ['./merge'];
 // 判断是否存在冲突
 let conflictFile = [];
 
-let vmcContent = "// create global vmc\n"
-    + "let vmc = {};\n"
+let mcContent = "// create global mc\n"
+    + "let mc = {};\n"
     + "(function(){\n"
     + "// register method collections\n"
     + "// register codes come from merge.js\n"
@@ -56,7 +56,7 @@ function readDirRecur(folder, callback) {
                             let contentIndex = content.indexOf("=");
                             content = content.substring(contentIndex + 1);
                             console.log(fullPath + createSymbolString(79 - fullPath.length) + "-- generate success!")
-                            vmcContent += "vmc." + file.split(".")[0] + " =" + content + "\n";
+                            mcContent += "mc." + file.split(".")[0] + " =" + content + "\n";
                             conflictFile.push(file);
                         }else{
                             throw new Error("Generate Failed: "+file+" has already exit!")
@@ -82,8 +82,8 @@ let timeStart = new Date();
                 /* console.log(n, "realcallback"); */
                 completeGenerator++
                 if(completeGenerator == configPaths.length){
-                    vmcContent += "})();";
-                    fs.writeFile(__dirname+'/vmc.js', vmcContent, null, function () { });
+                    mcContent += "})();";
+                    fs.writeFile(__dirname+'/mc.js', mcContent, null, function () { });
                     console.log("----------------------------------------------------------------------------------------------------");
                     console.log("Elapsed Time -- " + ((new Date() - timeStart) / 1000).toFixed(3) + "s");
                 }

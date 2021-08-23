@@ -71,25 +71,26 @@ function readDirRecur(folder, callback) {
     })
 }
 let timeStart = new Date();
-    (() => {
-        // 创建判断完成全部生成的数字
-        let completeGenerator = 0;
-        // 执行获取merge文件内容
-        for (let index = 0; index < configPaths.length; index++) {
-            const element = configPaths[index];
-            let itemPath = path.join(__dirname, element);
-            readDirRecur(itemPath, function () {
-                /* console.log(n, "realcallback"); */
-                completeGenerator++
-                if(completeGenerator == configPaths.length){
-                    mcContent += "})();";
-                    fs.writeFile(__dirname+'/mc.js', mcContent, null, function () { });
-                    console.log("----------------------------------------------------------------------------------------------------");
-                    console.log("Elapsed Time -- " + ((new Date() - timeStart) / 1000).toFixed(3) + "s");
-                }
-            })
-        }
-    })();
+
+(() => {
+    // 创建判断完成全部生成的数字
+    let completeGenerator = 0;
+    // 执行获取merge文件内容
+    for (let index = 0; index < configPaths.length; index++) {
+        const element = configPaths[index];
+        let itemPath = path.join(__dirname, element);
+        readDirRecur(itemPath, function () {
+            /* console.log(n, "realcallback"); */
+            completeGenerator++
+            if(completeGenerator == configPaths.length){
+                mcContent += "})();";
+                fs.writeFile(__dirname+'/mc.js', mcContent, null, function () { });
+                console.log("----------------------------------------------------------------------------------------------------");
+                console.log("Elapsed Time -- " + ((new Date() - timeStart) / 1000).toFixed(3) + "s");
+            }
+        })
+    }
+})();
 
 function createSymbolString(number) {
     let s = " ";

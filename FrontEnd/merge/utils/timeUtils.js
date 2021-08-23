@@ -55,7 +55,7 @@ let timeUtils = {
      * @param {String} fmt 
      * @returns {String}
      */
-    format: function (date, fmt) {
+    format: function (date, fmt = "yyyy-MM-dd hh:mm:ss") {
         if (Object.prototype.toString.call(date) != '[object Date]') {
             console.error("type error! date must be Date!");
             return;
@@ -101,8 +101,8 @@ let timeUtils = {
  * @param {String} fmt 
  * @returns {String}
  */
-Date.prototype.format = Date.prototype.format ? Date.prototype.format : function (fmt) {
-    var o = {
+Date.prototype.format = Date.prototype.format ? Date.prototype.format : function (fmt = "yyyy-MM-dd hh:mm:ss") {
+    let o = {
         "M+": this.getMonth() + 1, //月份
         "d+": this.getDate(), //日
         "h+": this.getHours(), //小时
@@ -112,7 +112,35 @@ Date.prototype.format = Date.prototype.format ? Date.prototype.format : function
         "S": this.getMilliseconds() //毫秒
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
+    for (let k in o)
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
+
+
+/**
+ * decrease/increase time by date type
+ * yyyy-MM-dd hh:mm:ss SSS
+ * @param {Number} n
+ * @param {String} type y,M,d,h,m,s,S
+ * @returns {Date}
+ */
+ Date.prototype.add = Date.prototype.add ? Date.prototype.add : function (n, type) {
+    let time = this.getTime();
+    let dateMapping = {
+        "S" : time + n,
+        "s" : time + n * 1000,
+        "m" : time + n * 1000 * 60,
+        "h" : time + n * 1000 * 60 * 60,
+        "d" : time + n * 1000 * 60 * 60 * 24,
+        "M" : "M" == type ? this.setMonth(this.getMonth() + n) : undefined,
+        "y" : "y" == type ? this.setYear(this.getFullYear() + n) : undefined
+    }
+    if(!dateMapping[type]){
+        console.error("param [type] is not correct");
+        return null;
+    }
+    return new Date(dateMapping[type]);
+}
+
+

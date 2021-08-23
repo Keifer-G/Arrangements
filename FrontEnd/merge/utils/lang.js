@@ -161,6 +161,12 @@ let lang = {
     bifurcateBy: function (arr, fn) {
         return arr.reduce((acc, val, i) => (acc[fn(val, i) ? 0 : 1].push(val), acc), [[], []]);
     },
+    /**
+     * 判断某个值在数组中出现了几次
+     * @param {Array} arr 
+     * @param {any} val 
+     * @returns 
+     */
     countOccurences: function (arr, val) {
         return arr.reduce((a, v) => (v === val ? a+1 : a), 0);
     }

@@ -113,6 +113,11 @@ let utils = {
         var reg = /^([\w+\.])+@\w+([.]\w+)+$/
         return reg.test(sEmail)
     },
+    /**
+     * 所有单词首字母大写
+     * @param {String} str 
+     * @returns 
+     */
     capitalizeEveryWord: function (str) {
         return str.replace(/\b[a-z]/g, char => char.toUpperCase());
     }
